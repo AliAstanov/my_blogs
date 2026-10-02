@@ -1,0 +1,126 @@
+definitions:
+  models.Category:
+    properties:
+      category_id:
+        type: string
+      created_at:
+        type: string
+      name:
+        type: string
+    type: object
+  models.CreateCategoryReq:
+    properties:
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/own/category:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new category based on the request body
+      parameters:
+      - description: Create Category Request Body
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created category
+          schema:
+            $ref: '#/definitions/models.Category'
+        "400":
+          description: Invalid request body
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new category
+      tags:
+      - categories
+  /api/pb/categories:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of categories with pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of categories per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories
+          schema:
+            items:
+              $ref: '#/definitions/models.Category'
+            type: array
+        "400":
+          description: Invalid parameters
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get categories list
+      tags:
+      - categories
+  /api/pb/category/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category data
+          schema:
+            $ref: '#/definitions/models.Category'
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a single category by ID
+      tags:
+      - categories
+swagger: "2.0"
